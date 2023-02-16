@@ -31,6 +31,21 @@ const (
 	AV_DICT_MULTIKEY        = int(C.AV_DICT_MULTIKEY)
 )
 
+func NewDictionary() *Dictionary {
+	var d *Dictionary
+
+	Ckey := C.CString("create")
+	defer C.free(unsafe.Pointer(Ckey))
+
+	Cvalue := C.CString("true")
+	defer C.free(unsafe.Pointer(Cvalue))
+	C.av_dict_set(
+		(**C.struct_AVDictionary)(unsafe.Pointer(&d)),
+		Ckey, Cvalue, 0)
+
+	return d
+}
+
 func (d *Dictionary) AvDictGet(key string, prev *DictionaryEntry, flags int) *DictionaryEntry {
 	Ckey := C.CString(key)
 	defer C.free(unsafe.Pointer(Ckey))

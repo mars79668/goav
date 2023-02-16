@@ -8,6 +8,8 @@ package avcodec
 import "C"
 import (
 	"unsafe"
+
+	"github.com/leokinglong/goav/avutil"
 )
 
 //func (ctxt *Context) AvCodecGetPktTimebase() Rational {
@@ -75,7 +77,7 @@ func (ctxt *Context) AvCodecGetSamAspRatioDen() int {
 //	C.av_codec_set_chroma_intra_matrix((*C.struct_AVCodecContext)(ctxt), (*C.uint16_t)(t))
 //}
 
-//Free the codec context and everything associated with it and write NULL to the provided pointer.
+// Free the codec context and everything associated with it and write NULL to the provided pointer.
 func (ctxt *Context) AvcodecFreeContext() {
 	C.avcodec_free_context((**C.struct_AVCodecContext)(unsafe.Pointer(&ctxt)))
 }
@@ -90,27 +92,27 @@ func (ctxt *Context) AvcodecFreeContext() {
 //	return int(C.avcodec_copy_context((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVCodecContext)(ctxt2)))
 //}
 
-//Initialize the Context to use the given Codec
-func (ctxt *Context) AvcodecOpen2(c *Codec, d **Dictionary) int {
+// Initialize the Context to use the given Codec
+func (ctxt *Context) AvcodecOpen2(c *Codec, d **avutil.Dictionary) int {
 	return int(C.avcodec_open2((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVCodec)(c), (**C.struct_AVDictionary)(unsafe.Pointer(d))))
 }
 
-//Close a given Context and free all the data associated with it (but not the Context itself).
+// Close a given Context and free all the data associated with it (but not the Context itself).
 func (ctxt *Context) AvcodecClose() int {
 	return int(C.avcodec_close((*C.struct_AVCodecContext)(ctxt)))
 }
 
-//The default callback for Context.get_buffer2().
+// The default callback for Context.get_buffer2().
 func (s *Context) AvcodecDefaultGetBuffer2(f *Frame, l int) int {
 	return int(C.avcodec_default_get_buffer2((*C.struct_AVCodecContext)(s), (*C.struct_AVFrame)(f), C.int(l)))
 }
 
-//Modify width and height values so that they will result in a memory buffer that is acceptable for the codec if you do not use any horizontal padding.
+// Modify width and height values so that they will result in a memory buffer that is acceptable for the codec if you do not use any horizontal padding.
 func (ctxt *Context) AvcodecAlignDimensions(w, h *int) {
 	C.avcodec_align_dimensions((*C.struct_AVCodecContext)(ctxt), (*C.int)(unsafe.Pointer(w)), (*C.int)(unsafe.Pointer(h)))
 }
 
-//Modify width and height values so that they will result in a memory buffer that is acceptable for the codec if you also ensure that all line sizes are a multiple of the respective linesize_align[i].
+// Modify width and height values so that they will result in a memory buffer that is acceptable for the codec if you also ensure that all line sizes are a multiple of the respective linesize_align[i].
 func (ctxt *Context) AvcodecAlignDimensions2(w, h *int, l int) {
 	C.avcodec_align_dimensions2((*C.struct_AVCodecContext)(ctxt), (*C.int)(unsafe.Pointer(w)), (*C.int)(unsafe.Pointer(h)), (*C.int)(unsafe.Pointer(&l)))
 }
@@ -125,7 +127,7 @@ func (ctxt *Context) AvcodecAlignDimensions2(w, h *int, l int) {
 //	return int(C.avcodec_decode_video2((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVFrame)(p), (*C.int)(unsafe.Pointer(g)), (*C.struct_AVPacket)(a)))
 //}
 
-//Decode a subtitle message.
+// Decode a subtitle message.
 func (ctxt *Context) AvcodecDecodeSubtitle2(s *AvSubtitle, g *int, a *Packet) int {
 	return int(C.avcodec_decode_subtitle2((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVSubtitle)(s), (*C.int)(unsafe.Pointer(g)), (*C.struct_AVPacket)(a)))
 }
@@ -148,12 +150,12 @@ func (ctxt *Context) AvcodecDefaultGetFormat(f *PixelFormat) PixelFormat {
 	return (PixelFormat)(C.avcodec_default_get_format((*C.struct_AVCodecContext)(ctxt), (*C.enum_AVPixelFormat)(f)))
 }
 
-//Reset the internal decoder state / flush internal buffers.
+// Reset the internal decoder state / flush internal buffers.
 func (ctxt *Context) AvcodecFlushBuffers() {
 	C.avcodec_flush_buffers((*C.struct_AVCodecContext)(ctxt))
 }
 
-//Return audio frame duration.
+// Return audio frame duration.
 func (ctxt *Context) AvGetAudioFrameDuration(f int) int {
 	return int(C.av_get_audio_frame_duration((*C.struct_AVCodecContext)(ctxt), C.int(f)))
 }
@@ -285,4 +287,28 @@ func AvInvQ(q Rational) Rational {
 
 func (ctxt *Context) SetBitRate(bitrate int64) {
 	ctxt.bit_rate = C.long(bitrate)
+}
+
+func (ctxt *Context) SetGopSize(gopSize int) {
+	ctxt.gop_size = C.int(gopSize)
+}
+
+func (ctxt *Context) SetKeyintMin(keyintMin int) {
+	ctxt.keyint_min = C.int(keyintMin)
+}
+
+func (ctxt *Context) SetLevel(level int) {
+	ctxt.level = C.int(level)
+}
+
+func (ctxt *Context) SetProfile(profile int) {
+	ctxt.profile = C.int(profile)
+}
+
+func (ctxt *Context) SetRcMaxRate(rcMaxRate int) {
+	ctxt.rc_max_rate = C.long(rcMaxRate)
+}
+
+func (ctxt *Context) SetRcMinRate(rcMinRate int) {
+	ctxt.rc_min_rate = C.long(rcMinRate)
 }

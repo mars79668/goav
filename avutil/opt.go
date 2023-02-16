@@ -15,9 +15,13 @@ package avutil
 import "C"
 
 type (
-	Context                       C.struct_AVCodecContext
+	Context C.struct_AVCodecContext
 )
 
-func AvOptSet(ctxt *Context ,name string,val string, searchFlags int) int{
-	return int(C.av_opt_set(((*C.struct_AVCodecContext)(ctxt)).priv_data,  C.CString(name), C.CString(val), C.int(searchFlags)))
+const (
+	AV_OPT_SEARCH_CHILDREN = 1 << 0
+)
+
+func AvOptSet(ctxt *Context, name string, val string, searchFlags int) int {
+	return int(C.av_opt_set(((*C.struct_AVCodecContext)(ctxt)).priv_data, C.CString(name), C.CString(val), C.int(searchFlags)))
 }
