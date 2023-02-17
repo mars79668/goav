@@ -6,6 +6,7 @@ package avcodec
 //#cgo pkg-config: libavcodec
 //#include <libavcodec/avcodec.h>
 import "C"
+import "unsafe"
 
 //Register a bitstream filter.
 // func (b *BitStreamFilter) AvRegisterBitstreamFilter() {
@@ -31,3 +32,33 @@ import "C"
 // func AvBitstreamFilterInit(n string) *BitStreamFilterContext {
 // 	return (*BitStreamFilterContext)(C.av_bitstream_filter_init(C.CString(n)))
 // }
+
+func AvBsfGetByName(name string) *BitStreamFilter {
+	cname := C.CString(name)
+	defer C.free(unsafe.Pointer(cname))
+	return (*BitStreamFilter)(C.av_bsf_get_by_name(cname))
+}
+
+func (f *BitStreamFilter) AvBsfAlloc() *BSFContext {
+	var bsfCtx *C.struct_AVBSFContext
+
+	C.av_bsf_alloc((*C.struct_AVBitStreamFilter)(f), (**C.struct_AVBSFContext)(&bsfCtx))
+
+	return (*BSFContext)(bsfCtx)
+}
+
+func (bfx *BSFContext) Init() int {
+	return int(C.av_bsf_init((*C.struct_AVBSFContext)(bfx)))
+}
+
+func (bfx *BSFContext) AvcodecParametersCopy(codecpar *AvCodecParameters) int {
+	return int(C.avcodec_parameters_copy((*C.struct_AVCodecParameters)(bfx.par_in), (*C.struct_AVCodecParameters)(codecpar)))
+}
+
+func (bfx *BSFContext) AvBsfSendPacket(pkt *Packet) int {
+	return int(C.av_bsf_send_packet((*C.struct_AVBSFContext)(bfx), (*C.struct_AVPacket)(pkt)))
+}
+
+func (bfx *BSFContext) AvBsfReceivePacket(pkt *Packet) int {
+	return int(C.av_bsf_receive_packet((*C.struct_AVBSFContext)(bfx), (*C.struct_AVPacket)(pkt)))
+}

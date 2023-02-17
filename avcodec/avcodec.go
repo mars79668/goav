@@ -33,7 +33,7 @@ type (
 	MediaType                     C.enum_AVMediaType
 	Packet                        C.struct_AVPacket
 	BitStreamFilter               C.struct_AVBitStreamFilter
-	BitStreamFilterContext        C.struct_AVBitStreamFilterContext
+	BSFContext                    C.struct_AVBSFContext
 	Rational                      C.struct_AVRational
 	Class                         C.struct_AVClass
 	AvCodecParameters             C.struct_AVCodecParameters
@@ -307,6 +307,10 @@ func (ctxt *Context) SetSampleFmt(sampleFmt int) {
 
 func (ctxt *Context) AvCodecGetSampleFmt() AvSampleFormat {
 	return *(*AvSampleFormat)(unsafe.Pointer(&ctxt.sample_fmt))
+}
+
+func (ctxt *Context) AvCodecGetSampleRate() int {
+	return (int)(ctxt.sample_rate)
 }
 
 func AvGetBytesPerSample(f AvSampleFormat) int {
