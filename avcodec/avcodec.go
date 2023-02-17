@@ -335,3 +335,7 @@ func (cp *AvCodecParameters) AvCodecGetExtradata() *uint8 {
 func (cp *AvCodecParameters) AvCodecGetExtradataSize() int {
 	return int(cp.extradata_size)
 }
+
+func (cp *AvCodecParameters) AvCodecGetCodecTag() uint32 {
+	return uint32(cp.codec_tag)
+}
