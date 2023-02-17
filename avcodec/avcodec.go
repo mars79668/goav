@@ -314,7 +314,14 @@ func AvGetBytesPerSample(f AvSampleFormat) int {
 }
 
 func (c *Codec) AvGetSampleFmts(p int) AvSampleFormat {
-	return *(*AvSampleFormat)(unsafe.Pointer(&c.sample_fmts))
+	return *(*AvSampleFormat)(unsafe.Pointer(c.sample_fmts))
+}
+
+func (c *Codec) AvGetPixFmts() int32 {
+	if unsafe.Pointer(c.pix_fmts) != nil {
+		return int32(*c.pix_fmts)
+	}
+	return -1
 }
 
 func AvcodecParametersCopy(dest *AvCodecParameters, src *AvCodecParameters) int {

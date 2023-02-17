@@ -312,3 +312,7 @@ func (ctxt *Context) SetRcMaxRate(rcMaxRate int) {
 func (ctxt *Context) SetRcMinRate(rcMinRate int) {
 	ctxt.rc_min_rate = C.long(rcMinRate)
 }
+
+func (ctxt *Context) SetPixelFormat(pxlFmt PixelFormat) {
+	ctxt.pix_fmt = int32(pxlFmt)
+}

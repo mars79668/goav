@@ -5,6 +5,7 @@ package avcodec
 
 //#cgo pkg-config: libavformat
 //#include <libavformat/avformat.h>
+//#include <libavcodec/codec.h>
 import "C"
 
 // Multiple encoders have the same ID and are able to encode compatible streams.
@@ -400,4 +401,8 @@ const (
 	AV_CODEC_ID_ZEROCODEC     = int(C.AV_CODEC_ID_ZEROCODEC)
 	AV_CODEC_ID_ZLIB          = int(C.AV_CODEC_ID_ZLIB)
 	AV_CODEC_ID_ZMBV          = int(C.AV_CODEC_ID_ZMBV)
+)
+
+const (
+	AV_CODEC_CAP_DELAY = int(C.AV_CODEC_CAP_DELAY)
 )
