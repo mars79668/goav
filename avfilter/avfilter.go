@@ -17,7 +17,6 @@ import "C"
 import (
 	"unsafe"
 
-	"github.com/leokinglong/goav/avcodec"
 	"github.com/leokinglong/goav/avutil"
 )
 
@@ -141,11 +140,11 @@ func AvfilterInoutFree(i **Input) {
 	C.avfilter_inout_free((**C.struct_AVFilterInOut)(unsafe.Pointer(i)))
 }
 
-func AvBufferSrcAddFrameFlags(bufferSrc *Context, frame *avcodec.Frame, flags int) int {
+func AvBufferSrcAddFrameFlags(bufferSrc *Context, frame *avutil.Frame, flags int) int {
 	return int(C.av_buffersrc_add_frame_flags((*C.struct_AVFilterContext)(bufferSrc), (*C.struct_AVFrame)(unsafe.Pointer(frame)), C.int(flags)))
 }
 
-func AvBufferSinkGetFrame(ctx *Context, frame *avcodec.Frame) int {
+func AvBufferSinkGetFrame(ctx *Context, frame *avutil.Frame) int {
 	return int(C.av_buffersink_get_frame((*C.struct_AVFilterContext)(ctx), (*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 

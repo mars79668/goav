@@ -103,8 +103,8 @@ func (ctxt *Context) AvcodecClose() int {
 }
 
 // The default callback for Context.get_buffer2().
-func (s *Context) AvcodecDefaultGetBuffer2(f *Frame, l int) int {
-	return int(C.avcodec_default_get_buffer2((*C.struct_AVCodecContext)(s), (*C.struct_AVFrame)(f), C.int(l)))
+func (s *Context) AvcodecDefaultGetBuffer2(f *avutil.Frame, l int) int {
+	return int(C.avcodec_default_get_buffer2((*C.struct_AVCodecContext)(s), (*C.struct_AVFrame)(unsafe.Pointer(f)), C.int(l)))
 }
 
 // Modify width and height values so that they will result in a memory buffer that is acceptable for the codec if you do not use any horizontal padding.
@@ -237,12 +237,12 @@ func (context *Context) AvcodecReceivePacket(dest *Packet) int {
 	//fmt.Printf("[%p] AvcodecReceivePacket result %v\n",context,ret)
 }
 
-func (ctxt *Context) AvcodecReceiveFrame(frame *Frame) int {
-	return (int)(C.avcodec_receive_frame((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVFrame)(frame)))
+func (ctxt *Context) AvcodecReceiveFrame(frame *avutil.Frame) int {
+	return (int)(C.avcodec_receive_frame((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
-func (ctxt *Context) AvcodecSendFrame(frame *Frame) int {
-	return int(C.avcodec_send_frame((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVFrame)(frame)))
+func (ctxt *Context) AvcodecSendFrame(frame *avutil.Frame) int {
+	return int(C.avcodec_send_frame((*C.struct_AVCodecContext)(ctxt), (*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
 func (ctxt *Context) SetFrameRate(frameRate Rational) {
