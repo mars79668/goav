@@ -6,6 +6,16 @@ Golang binding for latest FFmpeg(FFmpeg 5.0 "Lorentz")
 A comprehensive binding to the ffmpeg video/audio manipulation library.
 
 
+# 使用自编译ffmpeg
+
+```bash
+export PKG_CONFIG_PATH=/root/ffmpeg/lib/lib/pkgconfig:$PKG_CONFIG_PATH
+go clean -cache
+go test -run 
+go build
+
+```
+
 ## Usage
 
 `````go

@@ -324,6 +324,10 @@ func (f *Frame) PktDts() int64 {
 	return int64(f.pkt_dts)
 }
 
+func (f *Frame) NbSamples() int64 {
+	return int64(f.nb_samples)
+}
+
 func (f *Frame) SetPktDts(pktDts int64) {
 	f.pkt_dts = C.int64_t(pktDts)
 }
@@ -338,6 +342,10 @@ func (f *Frame) SetPktDuration(duration int64) {
 
 func AvFrameGetExtendedData(f *Frame) **uint8 {
 	return (**uint8)(unsafe.Pointer(f.extended_data))
+}
+
+func AvSamplesGetBufferSize(nbChannels, nbSamples int, sampleFmt int) int {
+	return int(C.av_samples_get_buffer_size((*C.int)(unsafe.Pointer(nil)), C.int(nbChannels), C.int(nbSamples), int32(sampleFmt), 0))
 }
 
 func (f *Frame) AvFrameGetData() *unsafe.Pointer {
@@ -384,6 +392,6 @@ func (f *Frame) AvFrameGetLineSize() *unsafe.Pointer {
 	return (*unsafe.Pointer)(unsafe.Pointer(&f.linesize))
 }
 
-func (f *Frame) BestEffortTimestamp2Pts() {
+func (f *Frame) BestEffortTimestamp() {
 	f.pts = f.best_effort_timestamp
 }

@@ -23,22 +23,22 @@ const (
 // 	p.data = nil
 // }
 
-//Allocate the payload of a packet and initialize its fields with default values.
+// Allocate the payload of a packet and initialize its fields with default values.
 func (p *Packet) AvNewPacket(s int) int {
 	return int(C.av_new_packet((*C.struct_AVPacket)(p), C.int(s)))
 }
 
-//Reduce packet size, correctly zeroing padding.
+// Reduce packet size, correctly zeroing padding.
 func (p *Packet) AvShrinkPacket(s int) {
 	C.av_shrink_packet((*C.struct_AVPacket)(p), C.int(s))
 }
 
-//Increase packet size, correctly zeroing padding.
+// Increase packet size, correctly zeroing padding.
 func (p *Packet) AvGrowPacket(s int) int {
 	return int(C.av_grow_packet((*C.struct_AVPacket)(p), C.int(s)))
 }
 
-//Initialize a reference-counted packet from av_malloc()ed data.
+// Initialize a reference-counted packet from av_malloc()ed data.
 func (p *Packet) AvPacketFromData(d *uint8, s int) int {
 	return int(C.av_packet_from_data((*C.struct_AVPacket)(p), (*C.uint8_t)(d), C.int(s)))
 
@@ -92,17 +92,17 @@ func (p *Packet) AvPacketFromData(d *uint8, s int) int {
 //	return int(C.av_packet_split_side_data((*C.struct_AVPacket)(p)))
 //}
 
-//Convenience function to free all the side data stored.
+// Convenience function to free all the side data stored.
 func (p *Packet) AvPacketFreeSideData() {
 	C.av_packet_free_side_data((*C.struct_AVPacket)(p))
 }
 
-//Setup a new reference to the data described by a given packet.
+// Setup a new reference to the data described by a given packet.
 func (p *Packet) AvPacketRef(s *Packet) int {
 	return int(C.av_packet_ref((*C.struct_AVPacket)(p), (*C.struct_AVPacket)(s)))
 }
 
-//Wipe the packet.
+// Wipe the packet.
 func (p *Packet) AvPacketUnref() {
 	C.av_packet_unref((*C.struct_AVPacket)(p))
 }
@@ -111,17 +111,17 @@ func (p *Packet) AvPacketFree() {
 	C.av_packet_free((**C.struct_AVPacket)(unsafe.Pointer(&p)))
 }
 
-//Move every field in src to dst and reset src.
+// Move every field in src to dst and reset src.
 func (p *Packet) AvPacketMoveRef(s *Packet) {
 	C.av_packet_move_ref((*C.struct_AVPacket)(p), (*C.struct_AVPacket)(s))
 }
 
-//Copy only "properties" fields from src to dst.
+// Copy only "properties" fields from src to dst.
 func (p *Packet) AvPacketCopyProps(s *Packet) int {
 	return int(C.av_packet_copy_props((*C.struct_AVPacket)(p), (*C.struct_AVPacket)(s)))
 }
 
-//Convert valid timing fields (timestamps / durations) in a packet from one timebase to another.
+// Convert valid timing fields (timestamps / durations) in a packet from one timebase to another.
 func (p *Packet) AvPacketRescaleTs(r, r2 Rational) {
 	C.av_packet_rescale_ts((*C.struct_AVPacket)(p), (C.struct_AVRational)(r), (C.struct_AVRational)(r2))
 }

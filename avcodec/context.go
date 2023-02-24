@@ -307,6 +307,7 @@ func (ctxt *Context) SetProfile(profile int) {
 
 func (ctxt *Context) SetRcMaxRate(rcMaxRate int) {
 	ctxt.rc_max_rate = C.long(rcMaxRate)
+	ctxt.rc_buffer_size = C.int(ctxt.bit_rate)
 }
 
 func (ctxt *Context) SetRcMinRate(rcMinRate int) {

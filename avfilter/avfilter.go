@@ -20,6 +20,11 @@ import (
 	"github.com/leokinglong/goav/avutil"
 )
 
+const (
+	AV_BUFFERSRC_FLAG_PUSH     = int(C.AV_BUFFERSRC_FLAG_PUSH)
+	AV_BUFFERSRC_FLAG_KEEP_REF = int(C.AV_BUFFERSRC_FLAG_KEEP_REF)
+)
+
 type (
 	Filter  C.struct_AVFilter
 	Context C.struct_AVFilterContext
